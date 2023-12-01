@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import regex as re
 
 from common.util import read_line
@@ -53,6 +55,6 @@ class One:
 
 
 if __name__ == '__main__':
-    one = One('one')
+    one = One(Path(__file__).stem)
     print(one.part_one())
     print(one.part_two())
