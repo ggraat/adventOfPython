@@ -15,7 +15,7 @@ class Two:
     def determine_possible(self):
         total = 0
         for line in read_line(self.filename):
-            if Two.possible(line, 'red', 12) and Two.possible(line, 'green', 13) and Two.possible(line, 'blue', 14):
+            if Two.get_max(line, 'red') <= 12 and Two.get_max(line, 'green') <= 13 and Two.get_max(line, 'blue') <= 14:
                 game_id = int(re.match(r'Game\s(\d+):', line).group(1))
                 total += game_id
         return total
@@ -28,11 +28,6 @@ class Two:
 
     def part_two(self):
         return self.determine_fewest()
-
-    @staticmethod
-    def possible(line, value, threshold):
-        values = list(map(lambda v: int(v), re.findall(r'(\d+)\s' + value, line)))
-        return max(values) <= threshold
 
     @staticmethod
     def get_max(line, value):
