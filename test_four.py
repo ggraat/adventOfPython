@@ -13,4 +13,4 @@ class test_four(TestCase):
 
     def test_part_two(self):
         self.four = Four(Path(__file__).stem)
-        self.assertEqual(467835, self.four.part_two())
+        self.assertEqual(30, self.four.part_two())
