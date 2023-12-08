@@ -52,7 +52,7 @@ class GhostMap:
         steps = []
         for m in self.maps:
             steps.append(m.navigate())
-        return math.lcm(steps[0], steps[1], steps[2], steps[3], steps[4], steps[5])
+        return math.lcm(*steps)
 
 
 class Eight(Puzzle):
