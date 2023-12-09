@@ -21,6 +21,15 @@ class Observation:
         # self.print_sequence()
         return total
 
+    def backtrack(self):
+        self.find_sequences()
+        value = 0
+        for seq in self.sequences[::-1]:
+            value = seq[0] - value
+        # print(total)
+        # self.print_sequence()
+        return value
+
     def find_sequences(self):
         while not self.is_ready():
             self.sequences.append(self.current)
@@ -48,7 +57,12 @@ class Nine(Puzzle):
         return total
 
     def part_two(self):
-        pass
+        total = 0
+        for line in read_line(self.filename):
+            obs = Observation(line)
+            predict = obs.backtrack()
+            total += predict
+        return total
 
 
 if __name__ == '__main__':
