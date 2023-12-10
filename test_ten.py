@@ -25,4 +25,14 @@ LJ.LJ'''.splitlines()
         self.assertEqual(8, ten.part_one())
 
     def test_part_two(self):
-        self.fail()
+        data = '''..........
+.S------7.
+.|F----7|.
+.||....||.
+.||....||.
+.|L-7F-J|.
+.|..||..|.
+.L--JL--J.
+..........'''.splitlines()
+        ten = Ten(data)
+        self.assertEqual(4, ten.part_two())
