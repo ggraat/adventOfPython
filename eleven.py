@@ -18,7 +18,7 @@ class Eleven(Puzzle):
     def part_one(self):
         return self.find_short_paths()
 
-    def find_short_paths(self, expand=1):
+    def find_short_paths(self, expand=2):
         galaxies = []
         empty_rows = []
         for y, row in enumerate(self.data):
