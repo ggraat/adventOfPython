@@ -27,4 +27,4 @@ class TestThirteen(TestCase):
         self.assertEqual(405, self.thirteen.part_one())
 
     def test_part_two(self):
-        self.fail()
+        self.assertEqual(400, self.thirteen.part_two())
