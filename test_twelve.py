@@ -19,3 +19,8 @@ class TestTwelve(TestCase):
 
     def test_part_two(self):
         self.assertEqual(525152, self.twelve.part_two())
+
+    def test_simple(self):
+        line = ['.??..??...?##. 1,1,3']
+        twelve = Twelve(line)
+        self.assertEqual(16384, twelve.part_two())
