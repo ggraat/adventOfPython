@@ -11,4 +11,4 @@ class TestFifteen(TestCase):
         self.assertEqual(1320, self.fifteen.part_one())
 
     def test_part_two(self):
-        self.assertEqual(145, self.fifteen.part_one())
+        self.assertEqual(145, self.fifteen.part_two())
