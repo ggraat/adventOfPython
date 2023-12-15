@@ -1,3 +1,4 @@
+import copy
 from pathlib import Path
 
 from common.puzzle import Puzzle
@@ -33,7 +34,82 @@ class Fourteen(Puzzle):
         return total
 
     def part_two(self):
-        pass
+        dish = [list(line) for line in self.data]
+        original_dish = copy.deepcopy(dish)
+        cycles = 1000
+        for i in range(cycles):
+            self.tilt_north(dish)
+            self.tilt_west(dish)
+            self.tilt_south(dish)
+            self.tilt_east(dish)
+            if dish == original_dish:
+                print(f'copy found at {i}!')
+        return self.get_load(dish)
+
+    def tilt_north(self, dish):
+        for col in range(len(dish[0])):
+            free_space = []
+            for i in range(len(dish)):
+                char = dish[i][col]
+                if char == '.':
+                    free_space.append(i)
+                elif char == '#':
+                    free_space = []
+                else:
+                    if len(free_space) > 0:
+                        dish[free_space.pop(0)][col] = 'O'
+                        dish[i][col] = '.'
+                        free_space.append(i)
+
+    def tilt_south(self, dish):
+        for col in range(len(dish[0])):
+            free_space = []
+            for i in range(len(dish) - 1, -1, -1):
+                char = dish[i][col]
+                if char == '.':
+                    free_space.append(i)
+                elif char == '#':
+                    free_space = []
+                else:
+                    if len(free_space) > 0:
+                        dish[free_space.pop(0)][col] = 'O'
+                        dish[i][col] = '.'
+                        free_space.append(i)
+
+    def tilt_west(self, dish):
+        for row in dish:
+            free_space = []
+            for i, char in enumerate(row):
+                if char == '.':
+                    free_space.append(i)
+                elif char == '#':
+                    free_space = []
+                else:
+                    if len(free_space) > 0:
+                        row[free_space.pop(0)] = 'O'
+                        row[i] = '.'
+                        free_space.append(i)
+
+    def tilt_east(self, dish):
+        for row in dish:
+            free_space = []
+            for i in range(len(row) - 1, -1, -1):
+                char = row[i]
+                if char == '.':
+                    free_space.append(i)
+                elif char == '#':
+                    free_space = []
+                else:
+                    if len(free_space) > 0:
+                        row[free_space.pop(0)] = 'O'
+                        row[i] = '.'
+                        free_space.append(i)
+
+    def get_load(self, dish):
+        total = 0
+        for n, row in enumerate(dish):
+            total += (len(dish) - n) * row.count('O')
+        return total
 
 
 if __name__ == '__main__':

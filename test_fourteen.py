@@ -22,4 +22,4 @@ O.#..O.#.#
         self.assertEqual(136, self.fourteen.part_one())
 
     def test_part_two(self):
-        self.assertEqual(400, self.fourteen.part_two())
+        self.assertEqual(64, self.fourteen.part_two())
