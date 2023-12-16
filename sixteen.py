@@ -1,3 +1,4 @@
+import copy
 from pathlib import Path
 
 from common.puzzle import Puzzle
@@ -43,6 +44,9 @@ class Grid:
     def __init__(self, _data):
         self.grid = [[Spot(char) for char in line] for line in _data]
         self.todo = [(0, 0, self.DIRECTION_RIGHT)]
+
+    def set_todo(self, todo):
+        self.todo = todo
 
     def move(self):
         while len(self.todo) > 0:
@@ -127,6 +131,36 @@ class Grid:
         return direction == self.DIRECTION_UP or direction == self.DIRECTION_DOWN
 
 
+class EnergyFinder:
+    def __init__(self, grid):
+        self.grid = grid
+
+    def find_max_energy(self):
+        max_energized = 0
+        for n in range(len(self.grid.grid[0])):
+            energized = self.find_energy(n, 0, Grid.DIRECTION_DOWN)
+            if energized > max_energized:
+                max_energized = energized
+            energized = self.find_energy(n, len(self.grid.grid) - 1, Grid.DIRECTION_UP)
+            if energized > max_energized:
+                max_energized = energized
+        for n in range(len(self.grid.grid)):
+            energized = self.find_energy(0, n, Grid.DIRECTION_RIGHT)
+            if energized > max_energized:
+                max_energized = energized
+            energized = self.find_energy(len(self.grid.grid[0]) - 1, n, Grid.DIRECTION_LEFT)
+            if energized > max_energized:
+                max_energized = energized
+        return max_energized
+
+    def find_energy(self, x, y, direction):
+        grid_copy = copy.deepcopy(self.grid)
+        grid_copy.set_todo([(x, y, direction)])
+        grid_copy.move()
+        energized = grid_copy.count_energized()
+        return energized
+
+
 class Sixteen(Puzzle):
     def __init__(self, _data):
         self.data = _data
@@ -138,7 +172,9 @@ class Sixteen(Puzzle):
         return grid.count_energized()
 
     def part_two(self):
-        pass
+        grid = Grid(self.data)
+        energy_finder = EnergyFinder(grid)
+        return energy_finder.find_max_energy()
 
 
 if __name__ == '__main__':

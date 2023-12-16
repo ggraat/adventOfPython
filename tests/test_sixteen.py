@@ -22,4 +22,4 @@ class TestSixteen(TestCase):
         self.assertEqual(46, self.puzzle.part_one())
 
     def test_part_two(self):
-        self.assertEqual(-1, self.puzzle.part_two())
+        self.assertEqual(51, self.puzzle.part_two())
