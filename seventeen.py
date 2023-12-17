@@ -1,4 +1,3 @@
-from heapq import heappop, heappush
 from pathlib import Path
 from queue import PriorityQueue
 
@@ -17,7 +16,7 @@ class Graph:
         self.height = len(_data)
         self.end = (self.width - 1, self.height - 1)
 
-    def dijkstra(self):
+    def dijkstra(self, min_same_direction, max_same_direction):
         todo = PriorityQueue()
         todo.put((0, (0, 0), 0, 0))
         todo.put((0, (0, 0), 1, 0))
@@ -32,7 +31,7 @@ class Graph:
 
             visited.add((current, direction, same_dir))
 
-            if current == self.end:
+            if current == self.end and same_dir >= min_same_direction:
                 return heat
 
             x, y = current
@@ -44,11 +43,13 @@ class Graph:
 
             heat += self.weights[next]
 
-            if same_dir < 2:
-                todo.put((heat, next, direction, same_dir + 1))
+            same_dir += 1
+            if same_dir < max_same_direction:
+                todo.put((heat, next, direction, same_dir))
 
-            todo.put((heat, next, (direction + 1) % 4, 0))
-            todo.put((heat, next, (direction - 1) % 4, 0))
+            if same_dir > min_same_direction - 1:
+                todo.put((heat, next, (direction + 1) % 4, 0))
+                todo.put((heat, next, (direction - 1) % 4, 0))
         return -1
 
 
@@ -58,10 +59,11 @@ class Seventeen(Puzzle):
 
     def part_one(self):
         graph = Graph(self.data)
-        return graph.dijkstra()
+        return graph.dijkstra(0, 3)
 
     def part_two(self):
-        pass
+        graph = Graph(self.data)
+        return graph.dijkstra(4, 10)
 
 
 if __name__ == '__main__':

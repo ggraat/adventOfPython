@@ -25,4 +25,13 @@ class TestSeventeen(TestCase):
         self.assertEqual(102, self.puzzle.part_one())
 
     def test_part_two(self):
-        self.assertEqual(-1, self.puzzle.part_two())
+        self.assertEqual(94, self.puzzle.part_two())
+
+    def test_simple(self):
+        _data = '''111111111111
+999999999991
+999999999991
+999999999991
+999999999991'''.splitlines()
+        simple = Seventeen(_data)
+        self.assertEqual(71, simple.part_two())
