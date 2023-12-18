@@ -1,0 +1,55 @@
+from unittest import TestCase
+
+from eighteen import Eighteen
+
+
+class TestEighteen(TestCase):
+    _data = '''R 6 (#70c710)
+D 5 (#0dc571)
+L 2 (#5713f0)
+D 2 (#d2c081)
+R 2 (#59c680)
+D 2 (#411b91)
+L 5 (#8ceee2)
+U 2 (#caa173)
+L 1 (#1b58a2)
+U 2 (#caa171)
+R 2 (#7807d2)
+U 3 (#a77fa3)
+L 2 (#015232)
+U 2 (#7a21e3)'''.splitlines()
+
+    def setUp(self):
+        self.puzzle = Eighteen(self._data)
+
+    def test_create_trench(self):
+        self.puzzle.draw_map()
+        self.assertEqual('''#######
+#.....#
+###...#
+..#...#
+..#...#
+###.###
+#...#..
+##..###
+.#....#
+.######'''.splitlines(), self.puzzle.create_trench())
+
+    def test_fill_map(self):
+        self.puzzle.draw_map()
+        self.assertEqual('''#######
+#######
+#######
+..#####
+..#####
+#######
+#####..
+#######
+.######
+.######'''.splitlines(), self.puzzle.fill_map())
+
+    def test_part_one(self):
+        self.assertEqual(62, self.puzzle.part_one())
+
+    def test_part_two(self):
+        self.assertEqual(952408144115, self.puzzle.part_two())
