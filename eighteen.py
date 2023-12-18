@@ -1,4 +1,3 @@
-import re
 from operator import itemgetter
 from pathlib import Path
 
@@ -8,14 +7,15 @@ from common.util import read_lines
 
 class Eighteen(Puzzle):
     def __init__(self, _data):
-        self.directions = []
-        for line in _data:
-            split = line.split()
-            self.directions.append((split[0], int(split[1])))
+        self.data = _data
         self.marked = []
 
     def part_one(self):
-        self.draw_map()
+        directions = []
+        for line in self.data:
+            split = line.split()
+            directions.append((split[0], int(split[1])))
+        self.draw_map(directions)
         map = self.fill_map()
         total = 0
         for line in map:
@@ -23,15 +23,40 @@ class Eighteen(Puzzle):
         return total
 
     def part_two(self):
-        pass
+        dirs = {'0': 'R', '1': 'D', '2': 'L', '3': 'U'}
+        directions = []
+        for line in self.data:
+            split = line.split()
+            directions.append((dirs[split[2][7:8]], int(split[2][2:7], 16)))
+        current = (0, 0)
+        vertices = []
+        boundary = 0
+        for d, steps in directions:
+            boundary += steps
+            if d == 'R':
+                current = (current[0] + steps, current[1])
+            if d == 'D':
+                current = (current[0], current[1] + steps)
+            if d == 'L':
+                current = (current[0] - steps, current[1])
+            if d == 'U':
+                current = (current[0], current[1] - steps)
+            vertices.append(current)
+        return self.polygon_area(vertices) + int(boundary / 2) + 1
 
-    def draw_map(self):
+    def polygon_area(self, vertices):
+        total = 0
+        for i in range(0, len(vertices) - 1):
+            total += (vertices[i][0] * vertices[i + 1][1]) - (vertices[i + 1][0] * vertices[i][1])
+        return int(total / 2)
+
+    def draw_map(self, directions):
         RIGHT = 'R'
         DOWN = 'D'
         LEFT = 'L'
         UP = "U"
         current = (0, 0)
-        for direction, steps in self.directions:
+        for direction, steps in directions:
             if direction == RIGHT:
                 next = (current[0] + steps, current[1])
                 for n in range(current[0], next[0]):

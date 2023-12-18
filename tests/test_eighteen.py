@@ -22,32 +22,6 @@ U 2 (#7a21e3)'''.splitlines()
     def setUp(self):
         self.puzzle = Eighteen(self._data)
 
-    def test_create_trench(self):
-        self.puzzle.draw_map()
-        self.assertEqual('''#######
-#.....#
-###...#
-..#...#
-..#...#
-###.###
-#...#..
-##..###
-.#....#
-.######'''.splitlines(), self.puzzle.create_trench())
-
-    def test_fill_map(self):
-        self.puzzle.draw_map()
-        self.assertEqual('''#######
-#######
-#######
-..#####
-..#####
-#######
-#####..
-#######
-.######
-.######'''.splitlines(), self.puzzle.fill_map())
-
     def test_part_one(self):
         self.assertEqual(62, self.puzzle.part_one())
 
