@@ -30,4 +30,4 @@ hdj{m>838:A,pv}
         self.assertEqual(19114, self.puzzle.part_one())
 
     def test_part_two(self):
-        self.assertEqual(-1, self.puzzle.part_two())
+        self.assertEqual(167409079868000, self.puzzle.part_two())
