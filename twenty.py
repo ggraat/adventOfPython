@@ -1,3 +1,4 @@
+import math
 from pathlib import Path
 from typing import Tuple, List
 
@@ -84,23 +85,21 @@ class Output(Module):
 
 class Twenty(Puzzle):
     def __init__(self, _data):
-        self.modules = self.read_modules(_data)
+        self.data = _data
 
     def part_one(self):
-        return self.push_button()
-
-    def push_button(self):
+        modules = self.read_modules(self.data)
         low = 0
         high = 0
         for n in range(1000):
-            todo = self.modules['button'].get_output(('start', False))
+            todo = modules['button'].get_output(('start', False))
             while len(todo) > 0:
                 source, value, out = todo.pop(0)
                 if value:
                     high += 1
                 else:
                     low += 1
-                todo.extend(self.modules[out].get_output((source, value)))
+                todo.extend(modules[out].get_output((source, value)))
         return low * high
 
     def read_modules(self, data):
@@ -132,7 +131,24 @@ class Twenty(Puzzle):
         return modules
 
     def part_two(self):
-        pass
+        modules = self.read_modules(self.data)
+        mod = modules['output']
+        while not isinstance(mod, Conjunction):
+            mod = next(filter(lambda module: mod.name in module.outputs, modules.values()))
+        inputs = [key for key in mod.inputs.keys()]
+        presses = 0
+        cycles = []
+        while len(inputs) > 0:
+            presses += 1
+            todo = modules['button'].get_output(('start', False))
+            while len(todo) > 0:
+                source, value, out = todo.pop(0)
+                if out == 'rm':
+                    if value:
+                        cycles.append(presses)
+                        inputs.remove(source)
+                todo.extend(modules[out].get_output((source, value)))
+        return math.lcm(*cycles)
 
 
 if __name__ == '__main__':
